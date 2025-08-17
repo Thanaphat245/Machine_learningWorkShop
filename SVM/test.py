@@ -10,8 +10,18 @@ sc.fit(x_train)
 x_train_std = sc.transform(x_train)
 x_test_std = sc.transform(x_test)
 from sklearn.svm import SVC
-svm = SVC(kernel='linear',random_state=77,C=0.1,gamma='auto')
-svm.fit(x_train_std,y_train)
-from sklearn.metrics import accuracy_score
-y_pred = svm.predict(x_test_std)
-print(accuracy_score(y_test,y_pred))
+from sklearn.model_selection import GridSearchCV
+param_grid = {
+    "C" : [0.1, 1, 10, 100],
+    "gamma" : [0.1, 1, 10, 100],
+    "kernel" : ['linear', 'rbf']
+}
+grid = GridSearchCV(SVC(class_weight='balanced'),param_grid,cv=5,scoring='accuracy')
+grid.fit(x_train_std, y_train)
+print("Best parameters found: ", grid.best_params_)
+print("Best cross-validation score: ", grid.best_score_)
+# svm = SVC(kernel='linear',random_state=77,C=0.1,gamma='auto')
+# svm.fit(x_train_std,y_train)
+# from sklearn.metrics import accuracy_score
+# y_pred = svm.predict(x_test_std)
+# print(accuracy_score(y_test,y_pred))
