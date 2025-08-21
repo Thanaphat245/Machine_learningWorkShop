@@ -9,6 +9,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 from imblearn.over_sampling import SMOTE    
 sm = SMOTE(random_state=42)
 X_res,Y_res = sm.fit_resample(X_train, y_train)
+print("Before SMOTE:", X_train.shape, y_train.shape)
+print("After SMOTE:", X_res.shape, Y_res.shape)
 
 model = RandomForestClassifier(n_estimators=100, random_state=42,min_samples_split=2)
 
